@@ -171,8 +171,12 @@ export default function Home() {
         />
         <DialogContent className="flex flex-col space-y-4">
           <DialogHeader className="space-y-2">
-            <DialogTitle>WhereDoc Ai!</DialogTitle>
-            <DialogDescription>Your personal Doctor!</DialogDescription>
+            <DialogTitle>AI tester</DialogTitle>
+            <DialogDescription>
+              This test all existing models in the server. Do remember to clear
+              localStorage when you done as all data is stored in your local
+              storage
+            </DialogDescription>
             <UsernameForm setOpen={setOpen} />
           </DialogHeader>
         </DialogContent>
