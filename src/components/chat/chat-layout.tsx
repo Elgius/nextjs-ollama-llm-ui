@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/resizable";
 import { cn } from "@/lib/utils";
 import { Sidebar } from "../sidebar";
-import { useChat } from "ai/react";
+import { Message, useChat } from "ai/react";
 import Chat, { ChatProps } from "./chat";
 import ChatList from "./chat-list";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
@@ -18,10 +18,10 @@ interface ChatLayoutProps {
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
   chatId: string;
+  setMessages: (messages: Message[]) => void;
 }
 
 type MergedProps = ChatLayoutProps & ChatProps;
-
 
 export function ChatLayout({
   defaultLayout = [30, 160],
@@ -36,12 +36,13 @@ export function ChatLayout({
   stop,
   chatId,
   setSelectedModel,
-  loadingSubmit
+  loadingSubmit,
+  formRef,
+  setMessages,
 }: MergedProps) {
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
   const [isMobile, setIsMobile] = useState(false);
 
-  
   useEffect(() => {
     const checkScreenWidth = () => {
       setIsMobile(window.innerWidth <= 1023);
@@ -88,8 +89,8 @@ export function ChatLayout({
           )}`;
         }}
         className={cn(
-          isCollapsed ?
-            "min-w-[50px] md:min-w-[70px] transition-all duration-300 ease-in-out"
+          isCollapsed
+            ? "min-w-[50px] md:min-w-[70px] transition-all duration-300 ease-in-out"
             : "hidden md:block"
         )}
       >
@@ -98,27 +99,24 @@ export function ChatLayout({
           messages={messages}
           isMobile={isMobile}
           chatId={chatId}
+          setMessages={setMessages}
         />
       </ResizablePanel>
-      <ResizableHandle className={cn(
-          "hidden md:flex",
-      )}
-        withHandle />
-      <ResizablePanel
-        className="h-full"
-        defaultSize={defaultLayout[1]}
-      >
-        <Chat 
-        chatId={chatId}
+      <ResizableHandle className={cn("hidden md:flex")} withHandle />
+      <ResizablePanel className="h-full" defaultSize={defaultLayout[1]}>
+        <Chat
+          chatId={chatId}
           setSelectedModel={setSelectedModel}
-           messages={messages}
-           input={input}
-           handleInputChange={handleInputChange}
-           handleSubmit={handleSubmit}
-           isLoading={isLoading}
-           loadingSubmit={loadingSubmit}
-           error={error}
-           stop={stop}
+          messages={messages}
+          input={input}
+          handleInputChange={handleInputChange}
+          handleSubmit={handleSubmit}
+          isLoading={isLoading}
+          loadingSubmit={loadingSubmit}
+          error={error}
+          stop={stop}
+          formRef={formRef}
+          isMobile={isMobile}
         />
       </ResizablePanel>
     </ResizablePanelGroup>
