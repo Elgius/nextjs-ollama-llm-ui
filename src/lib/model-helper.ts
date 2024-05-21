@@ -1,9 +1,9 @@
 export function getSelectedModel(): string {
   if (typeof window !== "undefined") {
     const storedModel = localStorage.getItem("selectedModel");
-    return storedModel || "gemma:2b";
+    return storedModel || "llama2";
   } else {
     // Default model
-    return "gemma:2b";
+    return "llama2";
   }
 }
